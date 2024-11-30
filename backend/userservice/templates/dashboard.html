@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1>Hoşgeldiniz, {{ user.username }}</h1>
+    <p>Bu, sizin panelinizdir. Profilinizi ve etkinliklerinizi burada yönetebilirsiniz.</p>
+    <a onclick="openForm()" class="btn btn-danger">Çıkış Yap</a>
+</div>
+
+<h2>İzin Kayıtlarınız</h2>
+{% if izin_objects %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Başlangıç Tarihi</th>
+                <th>Bitiş Tarihi</th>
+                <th>Gerekçe</th>
+                <th>Zaruri</th>
+                <th>İşlemler</th> <!-- Actions column -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for izin in izin_objects %}
+                <tr>
+                    <td>{{ izin.izin_baslangic }}</td>
+                    <td>{{ izin.izin_bitis }}</td>
+                    <td>{{ izin.gerekce }}</td>
+                    <td>{% if izin.zaruri %}Evet{% else %}Hayır{% endif %}</td>
+                    <td>
+                        <a href="{% url 'edit_izin' izin.id %}" class="btn btn-primary">Düzenle</a> <!-- Edit button -->
+
+                        <!-- Delete button -->
+                        <form method="post" action="{% url 'izin_delete' izin.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Bu kaydı silmek istediğinizden emin misiniz?');">
+                                Sil
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if izin_objects.has_previous %}
+                <a href="?page=1">&laquo; ilk</a>
+                <a href="?page={{ izin_objects.previous_page_number }}">önceki</a>
+            {% endif %}
+
+            <span class="current">
+                Sayfa {{ izin_objects.number }} / {{ izin_objects.paginator.num_pages }}.
+            </span>
+
+            {% if izin_objects.has_next %}
+                <a href="?page={{ izin_objects.next_page_number }}">sonraki</a>
+                <a href="?page={{ izin_objects.paginator.num_pages }}">son &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% else %}
+    <p>Hiç izin kaydınız yok.</p>
+{% endif %}
+{% endblock %}
+

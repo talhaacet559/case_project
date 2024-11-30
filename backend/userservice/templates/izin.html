@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+<head>
+{% block title %} İzin Formu{% endblock %}
+</head>
+
+<body>
+{% if messages %}
+    <div class="alert alert-success">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+{% block content %}
+
+    <h1>İzin Formu Oluştur</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
+</body>

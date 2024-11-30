@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Logout{% endblock %}
+
+{% block logout %}
+<div class="text-center">
+    <h2>Görüşürüz!</h2>
+    <p>Yeniden giriş yap</p>
+    <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+</div>
+{% endblock %}
