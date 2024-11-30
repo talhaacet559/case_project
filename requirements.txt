@@ -7,3 +7,4 @@ django-debug-toolbar>=3.10
 django-extensions>=3.2
 pytest>=7.4
 pytest-django>=4.5
+django-extensions
