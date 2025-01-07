@@ -16,6 +16,7 @@ class Calisan(AbstractUser):
     sonraki_dönem_kullanilan_izin = models.PositiveIntegerField(default=0)
     izinli = models.BooleanField(default=False)
     izin_ceza =PositiveIntegerField(default=0)
+    gec_biriken = models.IntegerField(default=0)
 
 
 class Izin(models.Model):
@@ -65,20 +66,36 @@ class Izin(models.Model):
 
 
 class CalisanGiris(models.Model):
-    """
-    This is a helper model table that stores the logins dates of the client
-    """
-    client = models.ForeignKey(
+    calisan = models.ForeignKey(
         Calisan,
         verbose_name='Çalışan',
         on_delete=models.DO_NOTHING
     )
-    date = models.DateTimeField(verbose_name="Giriş Zamanı")
+    giris_zamani = models.DateTimeField(verbose_name="Giriş Zamanı")
+    ilk_giris = models.BooleanField()
+    class Meta:
+        verbose_name = "Calisan Giris"
+        verbose_name_plural = "Calisan Girisleri"
 
     def __str__(self):
-        return '{}'.format(self.client)
+        etiket = "Mesai Başlangici" if self.ilk_giris else "Giris"
+        return f"{self.calisan} -- {self.giris_zamani}--{etiket}"
 
 
+class Bildirim(models.Model):
+    calisan: Calisan = models.ForeignKey(
+        Calisan,
+        on_delete=models.CASCADE,
+        blank=False,
+        null=False
+    )
+    message = models.CharField(max_length=255, default="")
+    class Meta:
+        verbose_name = "Bildirim"
+        verbose_name_plural = "Bildirimler"
+
+    def __str__(self):
+        return self.message
 
 
 

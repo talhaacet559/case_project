@@ -1,11 +1,11 @@
 from django.contrib import admin
-from django.contrib.admin import ModelAdmin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.models import AbstractUser
 from django.forms import forms
 
-from .models import Izin, Calisan
+from .models import Izin, Calisan, CalisanGiris, Bildirim
+
 
 class CalisanChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
@@ -49,4 +49,12 @@ admin.site.register(Calisan, CalisanAdmin)
 
 @admin.register(Izin)
 class IzinAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(CalisanGiris)
+class GirisAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Bildirim)
+class BildirimAdmin(admin.ModelAdmin):
     pass
